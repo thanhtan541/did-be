@@ -55,7 +55,7 @@ func TestPing(t *testing.T) {
 	app := spawnApp()
 	resp := app.getPing()
 
-	if resp.StatusCode == 200 {
+	if resp.StatusCode != 200 {
 		t.Fatalf("Failed to call ping")
 	}
 }
