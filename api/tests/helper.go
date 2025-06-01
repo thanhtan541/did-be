@@ -25,6 +25,9 @@ func (ta *TestApp) getPing() *http.Response {
 	return res
 }
 
+// Spawn an isolated test sandox for each testcase
+// Port 0 is special number that lets OS
+// pick any avaiable port
 func SpawnApp() TestApp {
 	// Setup: initialize DB, server, etc.
 	cfg, err := configuration.LoadConfig()

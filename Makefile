@@ -24,5 +24,10 @@ test:
 		go test ./$$dir/...; \
 	done
 
+show-todos:
+	grep -rni ./README.md -e 'todo'
+	grep -rni ./api -e 'todo'
+	grep -rni ./core -e 'todo'
+
 ## All: run format, lint, test
 all: format lint test

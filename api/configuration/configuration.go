@@ -53,6 +53,9 @@ func LoadConfig() (*Settings, error) {
 	return &cfg, nil
 }
 
+// In this case, we're looking the parent module
+// Note: assumption that configuration live inside
+// the target module, "api"
 func findGoProjectRoot() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
