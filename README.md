@@ -43,6 +43,13 @@ You can run tests using the following command:
 make test
 ```
 
+### Control log output
+```bash
+# Need to create logs/app.log before running the project
+export LOG_TO_FILE=true // log to file
+export LOG_TO_FILE=false // log to stdout
+```
+
 ### Generate code reports
 
 You can run code reports using the following command:

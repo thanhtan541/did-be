@@ -35,8 +35,9 @@ func SpawnApp() TestApp {
 		log.Fatalf("❌ Failed to load configuration: %v", err)
 	}
 
+	telemtryName := "test-telemetry"
 	cfg.Application.Port = 0 //Set to open random port
-	application, err := startup.Build(cfg)
+	application, err := startup.Build(cfg, telemtryName)
 	if err != nil {
 		log.Fatalf("❌ Failed to build application: %v", err)
 	}

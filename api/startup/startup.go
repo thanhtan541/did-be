@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thanhtan541/did-be-wp/api/configuration"
 	"github.com/thanhtan541/did-be-wp/api/route"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 type Application struct {
@@ -19,7 +20,7 @@ type Application struct {
 
 type ApplicationBaseUrl string
 
-func Build(cfg *configuration.Settings) (*Application, error) {
+func Build(cfg *configuration.Settings, telemetry string) (*Application, error) {
 	address := fmt.Sprintf("%s:%d", cfg.Application.Host, cfg.Application.Port)
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
@@ -29,6 +30,9 @@ func Build(cfg *configuration.Settings) (*Application, error) {
 	port := listener.Addr().(*net.TCPAddr).Port
 
 	router := gin.New()
+	// Attach OpenTelemetry middleware
+	router.Use(otelgin.Middleware(telemetry))
+
 	router.GET("/ping", route.Ping)
 	srv := &http.Server{
 		Handler: router,
