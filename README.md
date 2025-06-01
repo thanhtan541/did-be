@@ -27,6 +27,13 @@ You'll need to install:
 SKIP_DOCKER=true ./scripts/init_db.sh
 ```
 
+To add new migration
+```
+migrate create -ext sql -dir db/migrations -seq create_users_table
+```
+
+> **_NOTE:_** All of migrations are located in `api/migrations` directory
+
 ### Build the project
 
 To build the project, run:

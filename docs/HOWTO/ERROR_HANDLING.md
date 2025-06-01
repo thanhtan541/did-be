@@ -7,8 +7,8 @@ There are two types of error:
 
 ## Unrecovarble
 
-> **_NOTE:_** All of Unit tests are written and reside in the `core` directory.
+> **_NOTE:_**
 
 ## Recovarble
 
-> **_NOTE:_** All of Integration tests are written and reside in the `api` directory.
+> **_NOTE:_**
