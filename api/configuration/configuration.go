@@ -2,6 +2,8 @@ package configuration
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -21,12 +23,17 @@ type ApplicationSettings struct {
 }
 
 func LoadConfig() (*Settings, error) {
+	dir, err := findGoProjectRoot()
+	if err != nil {
+		return nil, fmt.Errorf("error getting project root directory: %w", err)
+	}
+
 	v := viper.New()
 
 	// Load base.yaml
 	v.SetConfigName("base")
 	v.SetConfigType("yaml")
-	v.AddConfigPath("configuration")
+	v.AddConfigPath(fmt.Sprintf("%s/%s", dir, "configuration"))
 
 	if err := v.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("error reading base.yaml: %w", err)
@@ -38,10 +45,30 @@ func LoadConfig() (*Settings, error) {
 		return nil, fmt.Errorf("error merging local.yaml: %w", err)
 	}
 
-	var config Settings
-	if err := v.Unmarshal(&config); err != nil {
+	var cfg Settings
+	if err := v.Unmarshal(&cfg); err != nil {
 		return nil, fmt.Errorf("unable to decode config into struct: %w", err)
 	}
 
-	return &config, nil
+	return &cfg, nil
+}
+
+func findGoProjectRoot() (string, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir, nil // Found go.mod → this is the project root
+		}
+
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			return "", fmt.Errorf("go.mod not found in any parent directory")
+		}
+
+		dir = parent
+	}
 }

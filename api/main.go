@@ -12,12 +12,12 @@ import (
 )
 
 func main() {
-	config, err := configuration.LoadConfig()
+	cfg, err := configuration.LoadConfig()
 	if err != nil {
 		log.Fatalf("❌ Failed to load configuration: %v", err)
 	}
 
-	application, err := startup.Build(config)
+	application, err := startup.Build(cfg)
 	if err != nil {
 		log.Fatalf("❌ Failed to build app: %v", err)
 	}

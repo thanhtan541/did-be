@@ -1,10 +1,9 @@
-package main
+package tests
 
 import (
 	"fmt"
 	"log"
 	"net/http"
-	"testing"
 
 	"github.com/thanhtan541/did-be-wp/api/configuration"
 	"github.com/thanhtan541/did-be-wp/api/startup"
@@ -26,15 +25,15 @@ func (ta *TestApp) getPing() *http.Response {
 	return res
 }
 
-func spawnApp() TestApp {
+func SpawnApp() TestApp {
 	// Setup: initialize DB, server, etc.
-	config, err := configuration.LoadConfig()
+	cfg, err := configuration.LoadConfig()
 	if err != nil {
 		log.Fatalf("❌ Failed to load configuration: %v", err)
 	}
 
-	config.Application.Port = 0 //Set to open random port
-	application, err := startup.Build(config)
+	cfg.Application.Port = 0 //Set to open random port
+	application, err := startup.Build(cfg)
 	if err != nil {
 		log.Fatalf("❌ Failed to build application: %v", err)
 	}
@@ -49,13 +48,4 @@ func spawnApp() TestApp {
 	}
 
 	return ta
-}
-
-func TestPing(t *testing.T) {
-	app := spawnApp()
-	resp := app.getPing()
-
-	if resp.StatusCode != 200 {
-		t.Fatalf("Failed to call ping")
-	}
 }
